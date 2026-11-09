@@ -1,0 +1,62 @@
+﻿@model BE4.Models.ViewModel.UpdateProfileVM
+
+@{
+    ViewBag.Title = "Cập nhật thông tin";
+}
+
+<h2>Cập nhật thông tin cá nhân</h2>
+
+<hr />
+
+@using (Html.BeginForm("UpdateProfile", "Account", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.CustomerPhone)
+        @Html.TextBoxFor(model => model.CustomerPhone,
+            new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.CustomerPhone,
+            "", new { @class = "text-danger" })
+    </div>
+
+    <br />
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.CustomerEmail)
+        @Html.TextBoxFor(model => model.CustomerEmail,
+            new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.CustomerEmail,
+            "", new { @class = "text-danger" })
+    </div>
+
+    <br />
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.CustomerAddress)
+        @Html.TextBoxFor(model => model.CustomerAddress,
+            new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.CustomerAddress,
+            "", new { @class = "text-danger" })
+    </div>
+
+    <br />
+
+    <button type="submit" class="btn btn-primary">
+        Lưu thay đổi
+    </button>
+
+    @Html.ActionLink(
+        "Quay lại",
+        "ProfileInfo",
+        "Account",
+        null,
+        new { @class = "btn btn-default" }
+    )
+}
+
+@section scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

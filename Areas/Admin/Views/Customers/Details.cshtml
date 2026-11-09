@@ -1,0 +1,39 @@
+﻿
+@model BE4.Models.Customer
+
+@{
+    ViewBag.Title = "Chi tiết khách hàng";
+}
+
+<h2>CHI TIẾT KHÁCH HÀNG</h2>
+
+<hr />
+
+<dl class="dl-horizontal">
+
+    <dt>Mã khách hàng</dt>
+    <dd>@Html.DisplayFor(model => model.CustomerID)</dd>
+
+    <dt>Họ và tên</dt>
+    <dd>@Html.DisplayFor(model => model.CustomerName)</dd>
+
+    <dt>Số điện thoại</dt>
+    <dd>@Html.DisplayFor(model => model.CustomerPhone)</dd>
+
+    <dt>Email</dt>
+    <dd>@Html.DisplayFor(model => model.CustomerEmail)</dd>
+
+    <dt>Địa chỉ</dt>
+    <dd>@Html.DisplayFor(model => model.CustomerAddress)</dd>
+
+    <dt>Tên tài khoản</dt>
+    <dd>@Html.DisplayFor(model => model.Username)</dd>
+
+</dl>
+
+<p>
+    @Html.ActionLink("Quay lại danh sách", "Index",
+        "Customers",
+        new { area = "Admin" },
+        new { @class = "btn btn-default" })
+</p>

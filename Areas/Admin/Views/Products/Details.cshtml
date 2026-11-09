@@ -1,0 +1,22 @@
+﻿
+@model BE4.Models.Product
+
+@{
+    ViewBag.Title = "Chi tiết sản phẩm";
+}
+
+<h2>CHI TIẾT SẢN PHẨM</h2>
+
+<div class="form-horizontal">
+    @Html.Partial("PVProductInfo", Model)
+</div>
+
+<p>
+    @Html.ActionLink("Sửa", "Edit", "Products",
+        new { area = "Admin", id = Model.ProductID },
+        new { @class = "btn btn-warning" })
+
+    @Html.ActionLink("Quay lại", "Index", "Products",
+        new { area = "Admin" },
+        new { @class = "btn btn-default" })
+</p>

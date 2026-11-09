@@ -1,0 +1,35 @@
+﻿
+@model IEnumerable<BE4.Models.Customer>
+
+@{
+    ViewBag.Title = "Quản lý khách hàng";
+}
+
+<h2>QUẢN LÝ KHÁCH HÀNG</h2>
+
+<table class="table table-bordered table-striped">
+    <tr>
+        <th>Mã khách hàng</th>
+        <th>Họ tên</th>
+        <th>Số điện thoại</th>
+        <th>Email</th>
+        <th>Địa chỉ</th>
+        <th>Chức năng</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.CustomerID</td>
+            <td>@item.CustomerName</td>
+            <td>@item.CustomerPhone</td>
+            <td>@item.CustomerEmail</td>
+            <td>@item.CustomerAddress</td>
+            <td>
+                @Html.ActionLink("Chi tiết", "Details",
+                    new { id = item.CustomerID },
+                    new { @class = "btn btn-info btn-sm" })
+            </td>
+        </tr>
+    }
+</table>

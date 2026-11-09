@@ -1,0 +1,58 @@
+﻿@model BE4.Models.Customer
+
+@{
+    ViewBag.Title = "Thông tin tài khoản";
+}
+
+<h2>Thông tin tài khoản</h2>
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+<hr />
+
+<dl class="dl-horizontal">
+    <dt>Họ và tên</dt>
+    <dd>@Html.DisplayFor(model => model.CustomerName)</dd>
+
+    <dt>Số điện thoại</dt>
+    <dd>@Html.DisplayFor(model => model.CustomerPhone)</dd>
+
+    <dt>Email</dt>
+    <dd>@Html.DisplayFor(model => model.CustomerEmail)</dd>
+
+    <dt>Địa chỉ</dt>
+    <dd>@Html.DisplayFor(model => model.CustomerAddress)</dd>
+
+    <dt>Tên đăng nhập</dt>
+    <dd>@Html.DisplayFor(model => model.Username)</dd>
+</dl>
+
+<hr />
+
+@Html.ActionLink(
+    "Cập nhật thông tin",
+    "UpdateProfile",
+    "Account",
+    null,
+    new { @class = "btn btn-primary" }
+)
+
+@Html.ActionLink(
+    "Đổi mật khẩu",
+    "ChangePassword",
+    "Account",
+    null,
+    new { @class = "btn btn-warning" }
+)
+
+@Html.ActionLink(
+    "Về trang chủ",
+    "Index",
+    "Home",
+    new { area = "" },
+    new { @class = "btn btn-default" }
+)

@@ -1,0 +1,35 @@
+﻿
+@model BE4.Models.Product
+
+@{
+    ViewBag.Title = "Thêm sản phẩm";
+}
+
+<h2>THÊM SẢN PHẨM</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        @Html.Partial("PVCreateEditProduct", Model)
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Thêm sản phẩm"
+                       class="btn btn-primary" />
+
+                @Html.ActionLink("Quay lại", "Index", "Products",
+                    new { area = "Admin" },
+                    new { @class = "btn btn-default" })
+            </div>
+        </div>
+
+    </div>
+}
+
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/jqueryval")

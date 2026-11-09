@@ -1,0 +1,16 @@
+﻿@model BE4.Models.Category
+
+<div class="form-group">
+    @Html.LabelFor(model => model.CategoryName,
+        "Tên danh mục",
+        new { @class = "control-label col-md-2" })
+
+    <div class="col-md-10">
+        @Html.EditorFor(model => model.CategoryName,
+            new { htmlAttributes = new { @class = "form-control" } })
+
+        @Html.ValidationMessageFor(model => model.CategoryName,
+            "",
+            new { @class = "text-danger" })
+    </div>
+</div>

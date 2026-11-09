@@ -1,0 +1,27 @@
+﻿@model BE4.Models.Product
+
+@{
+    ViewBag.Title = "Xóa sản phẩm";
+}
+
+<h2>XÓA SẢN PHẨM</h2>
+
+<h4>Bạn có chắc chắn muốn xóa sản phẩm này?</h4>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(model => model.ProductID)
+
+    @Html.Partial("PVProductInfo", Model)
+
+    <div class="form-group">
+        <input type="submit" value="Xác nhận xóa"
+               class="btn btn-danger" />
+
+        @Html.ActionLink("Quay lại", "Index", "Products",
+            new { area = "Admin" },
+            new { @class = "btn btn-default" })
+    </div>
+}

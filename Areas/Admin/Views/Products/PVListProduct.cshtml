@@ -1,0 +1,80 @@
+﻿
+@model BE4.Models.ViewModel.ProductSearchVM
+@using PagedList.Mvc
+
+<h2 class="bg-success">DANH SÁCH SẢN PHẨM</h2>
+
+@if (Model.Products != null && Model.Products.Any())
+{
+    <table class="table table-bordered table-responsive">
+        <thead>
+            <tr>
+                <th>Hình ảnh</th>
+                <th>Tên sản phẩm</th>
+                <th>Đơn giá</th>
+                <th>Danh mục</th>
+                <th>Chức năng</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var item in Model.Products)
+            {
+                <tr>
+                    <td>
+                        @if (!string.IsNullOrWhiteSpace(item.ProductImage))
+                        {
+                            <img src="@Url.Content(item.ProductImage)"
+                                 width="100"
+                                 height="120"
+                                 style="object-fit:contain;" />
+                        }
+                        else
+                        {
+                            <span>Chưa có ảnh</span>
+                        }
+                    </td>
+
+                    <td>@item.ProductName</td>
+
+                    <td>@item.ProductPrice.ToString("N0")</td>
+
+                    <td>@item.Category.CategoryName</td>
+
+                    <td>
+                        @Html.ActionLink("Sửa", "Edit", "Products",
+                            new { area = "Admin", id = item.ProductID },
+                            new { @class = "btn btn-primary btn-sm" })
+
+                        @Html.ActionLink("Chi tiết", "Details", "Products",
+                            new { area = "Admin", id = item.ProductID },
+                            new { @class = "btn btn-primary btn-sm" })
+
+                        @Html.ActionLink("Xóa", "Delete", "Products",
+                            new { area = "Admin", id = item.ProductID },
+                            new { @class = "btn btn-primary btn-sm" })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Không tìm thấy sản phẩm phù hợp.</p>
+}
+
+<div class="text-center">
+    @Html.PagedListPager(
+        Model.Products,
+        page => Url.Action("Index", "Products", new
+        {
+            area = "Admin",
+            searchTerm = Model.SearchTerm,
+            minPrice = Model.MinPrice,
+            maxPrice = Model.MaxPrice,
+            sortOrder = Model.SortOrder,
+            page = page
+        })
+    )
+</div>
