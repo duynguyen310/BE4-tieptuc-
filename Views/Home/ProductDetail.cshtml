@@ -1,0 +1,119 @@
+﻿@model BE4.Models.ViewModel.ProductDetailVM
+
+@{
+    ViewBag.Title = "Chi tiết sản phẩm";
+}
+
+<link rel="stylesheet"
+      href="@Url.Content("~/Content/myStyle/CustomerDetailProduct.css")" />
+
+<div class="product-detail">
+
+    <!-- THÔNG TIN SẢN PHẨM -->
+    <div class="product-detail-main">
+
+        <!-- Hình ảnh -->
+        <div class="product-detail-image">
+
+            @if (!string.IsNullOrEmpty(Model.Product.ProductImage))
+            {
+                <img src="@Url.Content(Model.Product.ProductImage)"
+                     alt="@Model.Product.ProductName" />
+            }
+            else
+            {
+                <div class="product-no-image">
+                    Chưa có ảnh
+                </div>
+            }
+
+        </div>
+
+        <!-- Thông tin -->
+        <div class="product-detail-info">
+
+            <h2>@Model.Product.ProductName</h2>
+
+            <p>
+                Danh mục:
+                <strong>@Model.Product.Category.CategoryName</strong>
+            </p>
+
+            <p class="detail-price">
+                @String.Format("{0:N0} đ", Model.Product.ProductPrice)
+            </p>
+
+            <p>
+                Đã bán: @Model.Product.OrderDetails.Count() sản phẩm
+            </p>
+
+            <hr />
+
+            <h4>Mô tả sản phẩm</h4>
+
+            <p>@Model.Product.ProductDecription</p>
+
+        </div>
+
+        <!-- Chọn số lượng -->
+        <div class="product-detail-buy">
+
+            <h4>Phần chọn mua</h4>
+
+            @using (Html.BeginForm("ProductDetail", "Home", FormMethod.Get))
+            {
+                @Html.Hidden("id", Model.Product.ProductID)
+
+                @Html.Hidden("page", Model.PageNumber)
+
+                <label for="quantity">Số lượng</label>
+
+                <input type="number"
+                       id="quantity"
+                       name="quantity"
+                       value="@Model.Quantity"
+                       min="1"
+                       class="form-control" />
+
+                <br />
+
+                <button type="submit" class="btn btn-primary">
+                    Tính tạm tính
+                </button>
+            }
+
+            <hr />
+
+            <h4>Tạm tính</h4>
+
+            <p class="detail-price">
+                @String.Format("{0:N0} đ", Model.EstimatedValue)
+            </p>
+
+            @Html.ActionLink(
+                     "Thêm vào giỏ hàng",
+                     "AddToCart",
+                     "Cart",
+                     new
+                     {
+                         id = Model.Product.ProductID,
+                         quantity = Model.Quantity
+                     },
+                     new { @class = "btn btn-info" }
+                 )
+
+        </div>
+
+    </div>
+
+    <hr />
+
+    <!-- SẢN PHẨM CÙNG DANH MỤC -->
+    @Html.Partial("_PVRelatedProduct", Model)
+
+    <hr />
+
+    <!-- TOP DEALS -->
+    @Html.Partial("_PVTopProduct", Model)
+
+</div>

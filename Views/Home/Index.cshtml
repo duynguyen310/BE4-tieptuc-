@@ -1,33 +1,212 @@
-﻿@{
-    ViewBag.Title = "Home Page";
+﻿@model BE4.Models.ViewModel.HomeProductVM
+@using BE4.Models
+@using System.Collections.Generic
+@using PagedList.Mvc
+
+@{
+    ViewBag.Title = "Trang chủ";
+
+    var categories = ViewBag.Categories as IEnumerable<Category>;
 }
 
-<main>
-    <section class="row" aria-labelledby="aspnetTitle">
-        <h1 id="title">ASP.NET</h1>
-        <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-        <p><a href="https://asp.net" class="btn btn-primary btn-md">Learn more &raquo;</a></p>
+<main class="container">
+
+    <!-- Tiêu đề trang chủ -->
+    <div class="text-center py-4">
+        <h1>CHÀO MỪNG ĐẾN VỚI MYSTORE</h1>
+        <p class="lead">Khám phá những sản phẩm mới nhất của chúng tôi</p>
+    </div>
+
+    <!-- Tìm kiếm sản phẩm -->
+    <div class="mb-4">
+        @using (Html.BeginForm("Index", "Home", FormMethod.Get))
+        {
+            if (ViewBag.SelectedCategoryId != null)
+            {
+                <input type="hidden"
+                       name="categoryId"
+                       value="@ViewBag.SelectedCategoryId" />
+            }
+
+            <div class="input-group">
+                <input type="text"
+                       name="searchTerm"
+                       value="@Model.SearchTerm"
+                       class="form-control"
+                       placeholder="Nhập tên sản phẩm cần tìm..." />
+
+                <button type="submit" class="btn btn-primary">
+                    Tìm kiếm
+                </button>
+            </div>
+        }
+    </div>
+
+    <!-- Danh mục sản phẩm -->
+    <section class="mb-5">
+        <h2 class="mb-3">Danh mục sản phẩm</h2>
+
+        <div class="d-flex flex-wrap gap-2">
+
+            @Html.ActionLink(
+                     "Tất cả",
+                     "Index",
+                     "Home",
+                     null,
+                     new { @class = "btn btn-outline-primary" }
+                 )
+
+            @if (categories != null)
+            {
+                foreach (var category in categories)
+                {
+                    @Html.ActionLink(
+                             category.CategoryName,
+                             "Index",
+                             "Home",
+                             new
+                             {
+                                 categoryId = category.CategoryID,
+                                 searchTerm = Model.SearchTerm
+                             },
+                             new { @class = "btn btn-outline-primary" }
+                         )
+                }
+            }
+
+        </div>
     </section>
 
-    <div class="row">
-        <section class="col-md-4" aria-labelledby="gettingStartedTitle">
-            <h2 id="gettingStartedTitle">Getting started</h2>
-            <p>
-                ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-                enables a clean separation of concerns and gives you full control over markup
-                for enjoyable, agile development.
-            </p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-        </section>
-        <section class="col-md-4" aria-labelledby="librariesTitle">
-            <h2 id="librariesTitle">Get more libraries</h2>
-            <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-        </section>
-        <section class="col-md-4" aria-labelledby="hostingTitle">
-            <h2 id="hostingTitle">Web Hosting</h2>
-            <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-        </section>
-    </div>
+    <!-- Sản phẩm nổi bật -->
+    <section class="mb-5">
+        <h2 class="mb-3">Sản phẩm nổi bật</h2>
+
+        <div class="row">
+
+            @if (Model.FeaturedProducts != null &&
+                 Model.FeaturedProducts.Any())
+            {
+                foreach (var product in Model.FeaturedProducts)
+                {
+                    <div class="col-md-4 col-sm-6 mb-4">
+                        <div class="card h-100 shadow-sm">
+
+                            @if (!string.IsNullOrEmpty(product.ProductImage))
+                            {
+                                <img src="@Url.Content(product.ProductImage)"
+                                     class="card-img-top"
+                                     alt="@product.ProductName"
+                                     style="height:200px; object-fit:contain;" />
+                            }
+                            else
+                            {
+                                <div class="text-center bg-light p-5">
+                                    Chưa có ảnh
+                                </div>
+                            }
+
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    @product.ProductName
+                                </h5>
+
+                                <p class="text-muted">
+                                    @product.Category.CategoryName
+                                </p>
+
+                                <h5 class="text-danger">
+                                    @String.Format("{0:N0} đ", product.ProductPrice)
+                                </h5>
+
+                                <p class="card-text">
+                                    @product.ProductDecription
+                                </p>
+                            </div>
+
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <p>Chưa có sản phẩm nổi bật.</p>
+            }
+
+        </div>
+    </section>
+
+    <hr />
+
+    <!-- Sản phẩm mới -->
+    <section class="mb-4">
+        <h2 class="mb-3">Sản phẩm mới</h2>
+
+        <div class="row">
+
+            @if (Model.NewProducts != null &&
+                 Model.NewProducts.Any())
+            {
+                foreach (var product in Model.NewProducts)
+                {
+                    <div class="col-md-4 col-sm-6 mb-4">
+                        <div class="card h-100 shadow-sm">
+
+                            @if (!string.IsNullOrEmpty(product.ProductImage))
+                            {
+                                <img src="@Url.Content(product.ProductImage)"
+                                     class="card-img-top"
+                                     alt="@product.ProductName"
+                                     style="height:200px; object-fit:contain;" />
+                            }
+                            else
+                            {
+                                <div class="text-center bg-light p-5">
+                                    Chưa có ảnh
+                                </div>
+                            }
+
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    @product.ProductName
+                                </h5>
+
+                                <p class="text-muted">
+                                    @product.Category.CategoryName
+                                </p>
+
+                                <h5 class="text-danger">
+                                    @String.Format("{0:N0} đ", product.ProductPrice)
+                                </h5>
+
+                                <p class="card-text">
+                                    @product.ProductDecription
+                                </p>
+                            </div>
+
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <p>Chưa có sản phẩm mới.</p>
+            }
+
+        </div>
+
+        <!-- Phân trang -->
+        <div class="text-center">
+            @Html.PagedListPager(
+                     Model.NewProducts,
+                     page => Url.Action("Index", new
+                     {
+                         searchTerm = Model.SearchTerm,
+                         categoryId = ViewBag.SelectedCategoryId,
+                         page
+                     })
+                 )
+        </div>
+
+    </section>
+
 </main>

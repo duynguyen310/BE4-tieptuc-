@@ -1,0 +1,17 @@
+﻿@model IEnumerable<BE4.Models.Category>
+
+@if (Model != null)
+{
+    foreach (var category in Model)
+    {
+        <li>
+            @Html.ActionLink(
+                     category.CategoryName,
+                     "ProductList",
+                     "Home",
+                     new { categoryId = category.CategoryID },
+                     new { @class = "dropdown-item" }
+                 )
+        </li>
+    }
+}

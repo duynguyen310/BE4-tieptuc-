@@ -1,0 +1,69 @@
+﻿
+@model BE4.Models.ViewModel.ProductDetailVM
+@using PagedList.Mvc
+
+@if (Model.TopProducts != null && Model.TopProducts.Any())
+{
+    <section class="top-products">
+
+        <h3>Sản phẩm bán chạy</h3>
+
+        <div class="top-product-list">
+
+            @foreach (var product in Model.TopProducts)
+            {
+                <div class="top-product-item">
+
+                    <a href="@Url.Action("ProductDetail", "Home",
+                            new { id = product.ProductID })">
+
+                        @if (!string.IsNullOrEmpty(product.ProductImage))
+                        {
+                            <img src="@Url.Content(product.ProductImage)"
+                                 alt="@product.ProductName" />
+                        }
+                        else
+                        {
+                            <div class="product-no-image">
+                                Chưa có ảnh
+                            </div>
+                        }
+
+                    </a>
+
+                    <h5>@product.ProductName</h5>
+
+                    <p class="detail-price">
+                        @String.Format("{0:N0} đ", product.ProductPrice)
+                    </p>
+
+                    <p>
+                        Đã bán: @product.OrderDetails.Count()
+                    </p>
+
+                </div>
+            }
+
+        </div>
+
+        <!-- PHÂN TRANG TOP PRODUCTS -->
+        <div class="product-pagination">
+
+            @Html.PagedListPager(
+                Model.TopProducts,
+                page => Url.Action("ProductDetail", "Home", new
+                {
+                    id = Model.Product.ProductID,
+                    quantity = Model.Quantity,
+                    page = page
+                })
+            )
+
+        </div>
+
+    </section>
+}
+else
+{
+    <p>Chưa có sản phẩm bán chạy trong danh mục này.</p>
+}

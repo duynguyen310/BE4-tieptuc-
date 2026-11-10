@@ -1,0 +1,41 @@
+﻿@model BE4.Models.ViewModel.ProductDetailVM
+
+@if (Model.RelatedProducts != null && Model.RelatedProducts.Any())
+{
+    <section class="related-products">
+        <h3>Sản phẩm tương tự</h3>
+
+        <div class="related-products-list">
+
+            @foreach (var product in Model.RelatedProducts)
+            {
+                <div class="related-product-item">
+
+                    <a href="@Url.Action("ProductDetail", "Home",
+                                new { id = product.ProductID })">
+
+                        @if (!string.IsNullOrEmpty(product.ProductImage))
+                        {
+                            <img src="@Url.Content(product.ProductImage)"
+                                 alt="@product.ProductName" />
+                        }
+                        else
+                        {
+                            <div class="product-no-image">
+                                Chưa có ảnh
+                            </div>
+                        }
+                    </a>
+
+                    <h5>@product.ProductName</h5>
+
+                    <p class="detail-price">
+                        @String.Format("{0:N0} đ", product.ProductPrice)
+                    </p>
+
+                </div>
+            }
+
+        </div>
+    </section>
+}

@@ -1,5 +1,53 @@
-﻿
+﻿@model BE4.Models.ViewModel.HomeProductVM
+
 @{
-    ViewBag.Title = "Trang quản trị";
+    ViewBag.Title = "Trang chủ";
 }
-<h2>TRANG HOME CỦA ADMIN</h2>
+
+<link rel="stylesheet" type="text/css"
+      href="@Url.Content("~/Content/myStyle/CustomerHome.css")" />
+
+<!-- PHẦN BANNER -->
+<section class="home-banner">
+    <div class="banner-container">
+        <h2>Chào mừng đến với MyStore</h2>
+        <p>
+            Khám phá những sản phẩm chất lượng với giá cả hợp lý.
+        </p>
+        <a href="#product-list" class="banner-button">
+            Bắt đầu mua sắm
+        </a>
+    </div>
+</section>
+
+<!-- PHẦN TÌM KIẾM SẢN PHẨM -->
+<section class="search-product">
+    <h2>Tìm kiếm sản phẩm</h2>
+
+    @using (Html.BeginForm("Index", "Home", FormMethod.Get))
+    {
+        <div class="search-container">
+            @Html.TextBoxFor(m => m.SearchTerm, new
+            {
+                @class = "search-input",
+                placeholder = "Nhập tên, mô tả hoặc danh mục sản phẩm"
+            })
+
+            <button type="submit" class="search-button">
+                Tìm kiếm
+            </button>
+        </div>
+    }
+</section>
+
+<hr />
+
+<!-- PHẦN SẢN PHẨM NỔI BẬT -->
+@Html.Partial("_PVFeatureProduct", Model)
+
+<hr />
+
+<!-- PHẦN DANH SÁCH SẢN PHẨM MỚI -->
+<div id="product-list">
+    @Html.Partial("_PVNewProduct", Model)
+</div>

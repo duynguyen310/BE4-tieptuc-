@@ -1,0 +1,81 @@
+﻿@model IEnumerable<BE4.Models.Product>
+
+@{
+    ViewBag.Title = "Danh sách sản phẩm";
+}
+
+<div class="container">
+
+    <h2 class="mb-3">
+        Danh mục: @ViewBag.CategoryName
+    </h2>
+
+    <hr />
+
+    @if (Model != null && Model.Any())
+    {
+        <div class="row">
+
+            @foreach (var product in Model)
+            {
+                <div class="col-md-4 col-sm-6 mb-4">
+
+                    <div class="card h-100 shadow-sm">
+
+                        @if (!string.IsNullOrEmpty(product.ProductImage))
+                        {
+                            <img src="@Url.Content(product.ProductImage)"
+                                 class="card-img-top"
+                                 alt="@product.ProductName"
+                                 style="height:200px; object-fit:contain;" />
+                        }
+                        else
+                        {
+                            <div class="text-center bg-light p-5">
+                                Chưa có ảnh
+                            </div>
+                        }
+
+                        <div class="card-body">
+
+                            <h5 class="card-title">
+                                @product.ProductName
+                            </h5>
+
+                            <p class="text-muted">
+                                @product.Category.CategoryName
+                            </p>
+
+                            <h5 class="text-danger">
+                                @String.Format("{0:N0} đ", product.ProductPrice)
+                            </h5>
+
+                            <p>
+                                @product.ProductDecription
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            }
+
+        </div>
+    }
+    else
+    {
+        <p>Danh mục này chưa có sản phẩm.</p>
+    }
+
+    <hr />
+
+    @Html.ActionLink(
+            "Quay lại trang chủ",
+            "Index",
+            "Home",
+            new { area = "" },
+            new { @class = "btn btn-primary" }
+        )
+
+</div>

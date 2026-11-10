@@ -1,0 +1,71 @@
+﻿@model BE4.Models.ViewModel.HomeProductVM
+@using PagedList.Mvc
+
+@if (Model.NewProducts != null && Model.NewProducts.Any())
+{
+    <section class="new-products">
+        <h2>Sản phẩm mới</h2>
+
+        <div class="new-product-list">
+
+            @foreach (var product in Model.NewProducts)
+            {
+                <div class="new-product-item">
+
+                    @if (!string.IsNullOrEmpty(product.ProductImage))
+                    {
+                        <img src="@Url.Content(product.ProductImage)"
+                             alt="@product.ProductName" />
+                    }
+                    else
+                    {
+                        <div class="product-no-image">
+                            Chưa có ảnh
+                        </div>
+                    }
+
+                    <h4>@product.ProductName</h4>
+
+                    <p class="product-price">
+                        @String.Format("{0:N0} đ", product.ProductPrice)
+                    </p>
+
+                    <p class="product-category">
+                        @(product.Category != null
+                            ? product.Category.CategoryName
+                            : "")
+                    </p>
+
+                    <p class="product-sold">
+                        Đã bán: @product.OrderDetails.Count()
+                    </p>
+
+                    @Html.ActionLink(
+                             "Xem chi tiết",
+                             "ProductDetail",
+                             "Home",
+                             new { id = product.ProductID },
+                             new { @class = "btn btn-primary btn-sm" }
+                         )
+
+                </div>
+            }
+
+        </div>
+
+        <div class="product-pagination">
+            @Html.PagedListPager(
+                     Model.NewProducts,
+                     page => Url.Action("Index", new
+                     {
+                         searchTerm = Model.SearchTerm,
+                         page = page
+                     })
+                 )
+        </div>
+    </section>
+}
+else
+{
+    <p>Chưa có sản phẩm mới.</p>
+}
